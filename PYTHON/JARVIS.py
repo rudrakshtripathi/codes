@@ -135,9 +135,20 @@ if __name__ == '__main__':
         
         # Tell the current time
         elif "the time" in query:
-            hour = datetime.datetime.now().strftime("%H")
-            minute = datetime.datetime.now().strftime("%M")
-            say(f"Sir, the time is {hour} hours and {minute} minutes.")
+            now = datetime.datetime.now()
+            hour = now.strftime("%H")
+            minute = now.strftime("%M")
+            second = now.strftime("%S")
+            meridiem = now.strftime("%p")
+            weekday = now.strftime("%A")
+            date = now.strftime("%B %d, %Y")
+            
+            if "date" in query:
+                say(f"Sir, today is {weekday}, {date}")
+            elif "full" in query:
+                say(f"Sir, it is {hour}:{minute}:{second} {meridiem} on {weekday}, {date}")
+            else:
+                say(f"Sir, the time is {hour}:{minute} {meridiem}")
             
         # AI interaction
         elif "using artificial intelligence" in query:
@@ -150,9 +161,13 @@ if __name__ == '__main__':
 
         # Reset chat history
         elif "reset chat" in query:
-            #global chatStr  # Declare global before assignment
-            chatStr = ""  # Reset the global chatStr variable
-            say("Chat history reset.")
+            try:
+                #global chatStr  # Declare global before assignment
+                chatStr = ""  # Reset the global chatStr variable
+                say("Chat history has been successfully reset.")
+            except Exception as e:
+                print(f"Error resetting chat: {e}")
+                say("Sorry, I encountered an error while trying to reset the chat history.")
         
         # General AI chat
         else:
