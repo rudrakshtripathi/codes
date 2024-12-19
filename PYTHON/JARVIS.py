@@ -19,14 +19,15 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 # Set the OpenAI API key directly in the code
-openai.api_key = "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"  # Replace with your OpenAI API key
+openai.api_key = "YOUR-OPENAI-API-KEY"  # Replace with your OpenAI API key
 
 # Wolframalpha API key
 WOLFRAM_API_KEY = "YOUR-WOLFRAM-API-KEY"
 
 # Email configuration
 EMAIL_ADDRESS = "your-email@gmail.com"
-EMAIL_PASSWORD = "your-app-password"
+EMAIL_PASSWORD = "your-app-password"    
+
 
 # Global chat history for conversation with AI
 chatStr = ""
@@ -103,7 +104,7 @@ def send_email(to_email, subject, body):
         msg['To'] = to_email
         msg['Subject'] = subject
         msg.attach(MIMEText(body, 'plain'))
-        
+        print(f"Sending email to {to_email} with subject: {subject}")
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
         server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
@@ -187,13 +188,20 @@ if __name__ == '__main__':
         
         # Handle video playing
         if "open video" in query:
-            videoPath = "/home/rudddyy/Downloads/Wallpaper/orange-train-at-sunset.3840x2160.mp4"
-            try:
-                os.system(f"xdg-open '{videoPath}'")
-                say("Opening video.")
-            except Exception as e:
-                print(f"Error opening Video: {e}")
-                say("Sorry, I couldn't open the video.")
+            videoPath = "/home/rudddyy/.wallpapers/orange-train-at-sunset.3840x2160.mp4"
+            if os.path.exists(videoPath):
+                try:
+                    subprocess.run(['xdg-open', videoPath], check=True)
+                    say("Opening video.")
+                except subprocess.CalledProcessError as e:
+                    print(f"Error opening video: {e}")
+                    say("Sorry, I couldn't open the video.")
+                except Exception as e:
+                    print(f"Unexpected error: {e}")
+                    say("Sorry, something went wrong while opening the video.")
+            else:
+                print("Video file not found")
+                say("Sorry, I couldn't find the video file.")
         
         # Tell the current time
         elif "the time" in query:
