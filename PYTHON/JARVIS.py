@@ -288,7 +288,7 @@ if __name__ == '__main__':
                 say("Chat history has been successfully reset.")
             except Exception as e:
                 print(f"Error resetting chat: {e}")
-                say("Sorry, I encountered an error while trying to reset the chat history.")
+                say("Sorry, I encountered an error while trying to reset chat history.")
         
         # General AI chat
         else:
