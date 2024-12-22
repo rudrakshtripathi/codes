@@ -18,7 +18,6 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# Set the OpenAI API key directly in the code
 openai.api_key = "YOUR-OPENAI-API-KEY"  # Replace with your OpenAI API key
 
 # Wolframalpha API key
