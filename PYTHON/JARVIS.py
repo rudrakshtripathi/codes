@@ -85,7 +85,7 @@ def ai(prompt):
 # Function to get weather information
 def get_weather(city):
     API_KEY = "YOUR-OPENWEATHER-API-KEY"
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={Enter your city city}&appid={API_KEY}&units=metric"
     try:
         response = requests.get(url)
         data = response.json()
