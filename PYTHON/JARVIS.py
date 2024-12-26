@@ -95,7 +95,7 @@ def get_weather(city):
     except:
         return "Sorry, I couldn't fetch the weather information."
 
-# Function to send email
+# Function to send email to new user with an id
 def send_email(to_email, subject, body):
     try:
         msg = MIMEMultipart()
