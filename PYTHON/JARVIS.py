@@ -154,7 +154,7 @@ def takeCommand():
             print(f"Error with speech recognition: {e}")
             return "Sorry, something went wrong."
 
-# Function to handle website opening based on user input
+# Function to handle website opening based on user input voice command
 def openWebsite(query):
     sites = [
         ["youtube", "https://www.youtube.com"],
