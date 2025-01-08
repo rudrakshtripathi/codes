@@ -4,36 +4,17 @@ import webbrowser
 import openai
 import datetime
 import random
-import pyttsx3  
-import requests
-import json
-import pyautogui
-import psutil
-import platform
-import wikipedia
-import subprocess
-import sys
-import wolframalpha
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import pyttsx3  # For text-to-speech
 
-openai.api_key = "YOUR-OPENAI-API-KEY"  # Replace with your OpenAI API key
-
-# Wolframalpha API key
-WOLFRAM_API_KEY = "YOUR-WOLFRAM-API-KEY"
-
-# Email configuration
-EMAIL_ADDRESS = "your-email@gmail.com"
-EMAIL_PASSWORD = "your-app-password"    
-
+# Set the OpenAI API key directly in the code
+openai.api_key = "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"  # Replace with your OpenAI API key
 
 # Global chat history for conversation with AI
 chatStr = ""
 
 # Function to chat with the AI and get responses
 def chat(query):
-    global chatStr
+    global chatStr  # Ensure global declaration is here
     print(chatStr)
     chatStr += f"Harry: {query}\n Jarvis: "
     
@@ -82,55 +63,13 @@ def ai(prompt):
     except Exception as e:
         print(f"Error processing AI prompt: {e}")
 
-# Function to get weather information
-def get_weather(city):
-    API_KEY = "YOUR-OPENWEATHER-API-KEY"
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={Enter your city city}&appid={API_KEY}&units=metric"
-    try:
-        response = requests.get(url)
-        data = response.json()
-        temp = data['main']['temp']
-        desc = data['weather'][0]['description']
-        return f"The temperature in {city} is {temp}°C with {desc}"
-    except:
-        return "Sorry, I couldn't fetch the weather information."
-
-# Function to send email to new user with an id
-def send_email(to_email, subject, body):
-    try:
-        msg = MIMEMultipart()
-        msg['From'] = EMAIL_ADDRESS
-        msg['To'] = to_email
-        msg['Subject'] = subject
-        msg.attach(MIMEText(body, 'plain'))
-        print(f"Sending email to {to_email} with subject: {subject}")
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        server.send_message(msg)
-        server.quit()
-        return True
-    except Exception as e:
-        print(f"Error sending email: {e}")
-        return False
-
-# Function to get system information
-def get_system_info():
-    cpu_usage = psutil.cpu_percent()
-    memory = psutil.virtual_memory()
-    disk = psutil.disk_usage('/')
-    return f"""
-    CPU Usage: {cpu_usage}%
-    Memory Usage: {memory.percent}%
-    Disk Usage: {disk.percent}%
-    OS: {platform.system()} {platform.release()}
-    """
-
 # Function to use text-to-speech to say something
 def say(text):
     engine = pyttsx3.init()
-    engine.setProperty('rate', 135.0)
-    engine.setProperty('volume', 0.9)
+    engine.setProperty('rate', 150)  # Set speech rate (default ~200)
+    engine.setProperty('volume', 0.9)  # Set volume level (0.0 to 1.0)
+    voices = engine.getProperty('voices')
+    engine.setProperty('voice', voices[0].id)  # Select the default voice (change index for different voices)
     engine.say(text)
     engine.runAndWait()
 
@@ -154,7 +93,7 @@ def takeCommand():
             print(f"Error with speech recognition: {e}")
             return "Sorry, something went wrong."
 
-# Function to handle website opening based on user input voice command
+# Function to handle website opening based on user input
 def openWebsite(query):
     sites = [
         ["youtube", "https://www.youtube.com"],
@@ -167,6 +106,7 @@ def openWebsite(query):
         ["discord", "https://www.discord.com"],
         ["github", "https://www.github.com"],
         ["stackoverflow", "https://www.stackoverflow.com"],
+        
     ]
     
     for site in sites:
@@ -185,91 +125,21 @@ if __name__ == '__main__':
         # Handle website opening
         openWebsite(query)
         
-        # Handle video playing
+        # Handle music playing
         if "open video" in query:
-            videoPath = "/home/rudddyy/.wallpapers/orange-train-at-sunset.3840x2160.mp4"
-            if os.path.exists(videoPath):
-                try:
-                    subprocess.run(['xdg-open', videoPath], check=True)
-                    say("Opening video.")
-                except subprocess.CalledProcessError as e:
-                    print(f"Error opening video: {e}")
-                    say("Sorry, I couldn't open the video.")
-                except Exception as e:
-                    print(f"Unexpected error: {e}")
-                    say("Sorry, something went wrong while opening the video.")
-            else:
-                print("Video file not found")
-                say("Sorry, I couldn't find the video file.")
+            videoPath = "/home/rudddyy/Downloads/Wallpaper/orange-train-at-sunset.3840x2160.mp4"  # Update the path as needed
+            try:
+                os.system(f"xdg-open '{videoPath}'")
+                say("Opening video.")
+            except Exception as e:
+                print(f"Error opening Video: {e}")
+                say("Sorry, I couldn't open the video.")
         
         # Tell the current time
         elif "the time" in query:
-            now = datetime.datetime.now()
-            hour = now.strftime("%H")
-            minute = now.strftime("%M")
-            second = now.strftime("%S")
-            meridiem = now.strftime("%p")
-            weekday = now.strftime("%A")
-            date = now.strftime("%B %d, %Y")
-            
-            if "date" in query:
-                say(f"Sir, today is {weekday}, {date}")
-            elif "full" in query:
-                say(f"Sir, it is {hour}:{minute}:{second} {meridiem} on {weekday}, {date}")
-            else:
-                say(f"Sir, the time is {hour}:{minute} {meridiem}")
-
-        # Weather information
-        elif "weather" in query:
-            say("Which city would you like to know the weather for?")
-            city = takeCommand()
-            weather_info = get_weather(city)
-            say(weather_info)
-
-        # System information
-        elif "system info" in query:
-            info = get_system_info()
-            say("Here's your system information:")
-            print(info)
-            say(info)
-
-        # Send email
-        elif "send email" in query:
-            try:
-                say("Who should I send the email to?")
-                to_email = takeCommand()
-                say("What should be the subject?")
-                subject = takeCommand()
-                say("What should I write in the email?")
-                body = takeCommand()
-                
-                if send_email(to_email, subject, body):
-                    say("Email has been sent successfully!")
-                else:
-                    say("Sorry, I couldn't send the email.")
-            except Exception as e:
-                say("Sorry, I encountered an error while sending the email.")
-
-        # Wikipedia search
-        elif "wikipedia" in query:
-            say("What would you like to search on Wikipedia?")
-            search_query = takeCommand()
-            try:
-                result = wikipedia.summary(search_query, sentences=2)
-                say("According to Wikipedia:")
-                say(result)
-            except:
-                say("Sorry, I couldn't find that on Wikipedia.")
-
-        # Calculator
-        elif "calculate" in query:
-            try:
-                client = wolframalpha.Client(WOLFRAM_API_KEY)
-                res = client.query(query)
-                answer = next(res.results).text
-                say(f"The answer is {answer}")
-            except:
-                say("Sorry, I couldn't perform that calculation.")
+            hour = datetime.datetime.now().strftime("%H")
+            minute = datetime.datetime.now().strftime("%M")
+            say(f"Sir, the time is {hour} hours and {minute} minutes.")
             
         # AI interaction
         elif "using artificial intelligence" in query:
@@ -282,12 +152,9 @@ if __name__ == '__main__':
 
         # Reset chat history
         elif "reset chat" in query:
-            try:
-                chatStr = ""
-                say("Chat history has been successfully reset.")
-            except Exception as e:
-                print(f"Error resetting chat: {e}")
-                say("Sorry, I encountered an error while trying to reset chat history.")
+            #global chatStr  # Declare global before assignment
+            chatStr = ""  # Reset the global chatStr variable
+            say("Chat history reset.")
         
         # General AI chat
         else:
