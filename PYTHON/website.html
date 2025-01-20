@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS AI Assistant</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        header h1 {
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #00fff0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .assistant-card {
+            width: 70%;
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 240, 0.5);
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .assistant-card h2 {
+            font-size: 2.5em;
+            color: #00fff0;
+            margin-bottom: 15px;
+        }
+
+        .assistant-card p {
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 10px 25px;
+            font-size: 1em;
+            text-transform: uppercase;
+            color: white;
+            background: #00fff0;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bgCanvas"></canvas>
+    <header>
+        <h1>JARVIS</h1>
+    </header>
+    <div class="container">
+        <div class="assistant-card">
+            <h2>Your Personal AI Assistant</h2>
+            <p>Welcome to JARVIS, your futuristic AI assistant designed to help with everyday tasks, enhance productivity, and provide intelligent solutions.</p>
+            <button class="btn">Explore More</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+
+        function createParticles() {
+            for (let i = 0; i < 150; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 3 + 1,
+                    dx: Math.random() * 2 - 1,
+                    dy: Math.random() * 2 - 1
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(0, 255, 240, 0.5)';
+
+            particles.forEach((particle) => {
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                particle.x += particle.dx;
+                particle.y += particle.dy;
+
+                if (particle.x < 0 || particle.x > canvas.width) particle.dx *= -1;
+                if (particle.y < 0 || particle.y > canvas.height) particle.dy *= -1;
+            });
+        }
+
+        function animate() {
+            drawParticles();
+            requestAnimationFrame(animate);
+        }
+
+        createParticles();
+        animate();
+    </script>
+</body>
+</html>

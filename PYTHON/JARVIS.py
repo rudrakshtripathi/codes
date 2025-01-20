@@ -7,7 +7,7 @@ import random
 import pyttsx3  # For text-to-speech
 
 # Set the OpenAI API key directly in the code
-openai.api_key = "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"  # Replace with your OpenAI API key
+openai.api_key = "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"  # Replace with your OpenAI API key
 
 # Global chat history for conversation with AI
 chatStr = ""
@@ -106,7 +106,16 @@ def openWebsite(query):
         ["discord", "https://www.discord.com"],
         ["github", "https://www.github.com"],
         ["stackoverflow", "https://www.stackoverflow.com"],
-        
+        ["linkedin", "https://www.linkedin.com"],
+        ["netflix", "https://www.netflix.com"],
+        ["amazon", "https://www.amazon.com"],
+        ["spotify", "https://www.spotify.com"],
+        ["twitch", "https://www.twitch.tv"],
+        ["gmail", "https://mail.google.com"],
+        ["outlook", "https://outlook.live.com"],
+        ["dropbox", "https://www.dropbox.com"],
+        ["medium", "https://medium.com"],
+        ["quora", "https://www.quora.com"],
     ]
     
     for site in sites:
