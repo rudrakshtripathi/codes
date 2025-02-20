@@ -116,8 +116,22 @@ def openWebsite(query):
         ["dropbox", "https://www.dropbox.com"],
         ["medium", "https://medium.com"],
         ["quora", "https://www.quora.com"],
+        ["pinterest", "https://www.pinterest.com"],
+        ["tiktok", "https://www.tiktok.com"],
+        ["snapchat", "https://www.snapchat.com"],
+        ["whatsapp", "https://web.whatsapp.com"],
+        ["telegram", "https://web.telegram.org"],
+        ["microsoft teams", "https://teams.microsoft.com"],
+        ["zoom", "https://zoom.us"],
+        ["notion", "https://www.notion.so"],
+        ["trello", "https://trello.com"],
+        ["canva", "https://www.canva.com"],
+        ["coursera", "https://www.coursera.org"],
+        ["udemy", "https://www.udemy.com"],
+        ["edx", "https://www.edx.org"],
+        ["khan academy", "https://www.khanacademy.org"],
+        ["duolingo", "https://www.duolingo.com"]
     ]
-    
     for site in sites:
         if f"Open {site[0]}".lower() in query.lower():
             say(f"Opening {site[0]} sir...")
